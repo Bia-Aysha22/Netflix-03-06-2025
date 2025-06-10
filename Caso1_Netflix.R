@@ -1,10 +1,9 @@
+#Caso 1
 library(tidyverse)
 library(lubridate)
 
-# Carregar dados
 netflix <- read_csv("netflix_titles.csv")
 
-# Processar datas
 netflix_limpo <- netflix %>%
   filter(!is.na(date_added)) %>%
   mutate(
@@ -12,12 +11,11 @@ netflix_limpo <- netflix %>%
     year_added = year(date_added)
   )
 
-# Contar lançamentos por tipo e ano
 por_tipo_ano <- netflix_limpo %>%
   group_by(year_added, type) %>%
   summarise(qtd = n(), .groups = "drop")
 
-# Gráfico de linhas
+
 ggplot(por_tipo_ano, aes(x = year_added, y = qtd, color = type)) +
   geom_line(size = 1.2) +
   labs(
